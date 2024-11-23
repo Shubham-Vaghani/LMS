@@ -1,0 +1,24 @@
+<div class="exam-container">
+  <app-question
+    [questions]="questions"
+    [(currentQuestionIndex)]="currentQuestionIndex"
+    [isReviewMode]="true"
+  ></app-question>
+
+  <div class="navigation-buttons">
+    <button
+      mat-button
+      (click)="previousQuestion()"
+      [disabled]="currentQuestionIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      mat-button
+      (click)="nextQuestion()"
+      [disabled]="currentQuestionIndex === questions.length - 1"
+    >
+      Next
+    </button>
+  </div>
+</div>

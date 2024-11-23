@@ -1,0 +1,23 @@
+<div class="exam-container">
+  <h1 class="title">Exam Details</h1>
+  <div class="exam-cards">
+    <div
+      class="exam-card"
+      *ngFor="let exam of givenExams"
+      (click)="goToExamReview(exam.id)"
+    >
+      <div class="exam-detail">
+        <span class="label">Topic:</span>
+        <span class="value">{{ exam.topic }}</span>
+      </div>
+      <div class="exam-detail">
+        <span class="label">Date:</span>
+        <span class="value">{{ exam.date }}</span>
+      </div>
+      <div class="exam-detail">
+        <span class="label">Time:</span>
+        <span class="value">{{ exam.time }}</span>
+      </div>
+    </div>
+  </div>
+</div>

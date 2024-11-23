@@ -1,0 +1,42 @@
+<div class="question-component">
+  <div class="question-list">
+    <button
+      *ngFor="let question of questions; let i = index"
+      mat-button
+      [ngClass]="getButtonClass(i)"
+      (click)="selectQuestion(i)"
+    >
+      {{ i + 1 }}
+    </button>
+  </div>
+
+  <div class="question-box">
+    <h2>{{ questions[currentQuestionIndex].question }}</h2>
+    <mat-radio-group
+      [(ngModel)]="questions[currentQuestionIndex].selectedOption"
+      [disabled]="isReviewMode"
+    >
+      <mat-radio-button
+        *ngFor="let option of questions[currentQuestionIndex].options"
+        [value]="option"
+        [class.correct]="
+          isReviewMode &&
+          option === questions[currentQuestionIndex].correctOption
+        "
+      >
+        <div class="label-option">
+          <span>{{ option }}</span>
+          <mat-icon
+            *ngIf="
+              isReviewMode &&
+              option === questions[currentQuestionIndex].correctOption
+            "
+            class="correct-icon"
+          >
+            check_circle
+          </mat-icon>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-header">
+    <div class="toggle-container">
+      <span>Sign In</span>
+      <mat-slide-toggle [(ngModel)]="isSignup" color="primary" class="toggle">
+      </mat-slide-toggle>
+      <span>Sign Up</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <h2>{{ isSignup ? "Sign Up" : "Sign In" }}</h2>
+    <form #loginSignupForm="ngForm" (ngSubmit)="onSubmit(loginSignupForm)">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          ngModel
+          required
+          email
+          #email="ngModel"
+        />
+        <mat-error *ngIf="email.invalid && email.touched">
+          Please enter a valid email.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          name="password"
+          ngModel
+          required
+          minlength="6"
+          #password="ngModel"
+        />
+        <mat-error *ngIf="password.invalid && password.touched">
+          Password is required and must be at least 6 characters long.
+        </mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loginSignupForm.invalid"
+      >
+        {{ isSignup ? "Sign Up" : "Sign In" }}
+      </button>
+    </form>
+  </div>
+</div>
