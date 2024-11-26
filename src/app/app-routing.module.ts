@@ -25,6 +25,13 @@ const routes: Routes = [
         (m) => m.StudentDashboardModule
       ),
   },
+  {
+    path: 'teacher-dashboard',
+    loadChildren: () =>
+      import('./pages/teacher/teacher-dashboard/teacher-dashboard.module').then(
+        (m) => m.TeacherDashboardModule
+      ),
+  },
 ];
 
 @NgModule({

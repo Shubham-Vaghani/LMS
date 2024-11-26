@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
+  @Input() role: 'student' | 'teacher' = 'student';
   activeRoute: string = '';
 
   constructor(private router: Router) {
@@ -23,5 +24,31 @@ export class SidebarComponent {
 
   isActive(route: string): boolean {
     return this.activeRoute.includes(route);
+  }
+
+  getRoutes() {
+    if (this.role === 'student') {
+      return [
+        { name: 'Exam List', route: '/student-dashboard/exam-list' },
+        {
+          name: 'Given Exam',
+          route: '/student-dashboard/given-exam',
+          badge: 4,
+        },
+      ];
+    } else {
+      return [
+        { name: 'Exam', route: '/teacher-dashboard/exam' },
+        {
+          name: 'Add Question',
+          route: '/teacher-dashboard/add-question',
+          badge: 2,
+        },
+        {
+          name: 'Exam Result',
+          route: '/teacher-dashboard/exam-result',
+        },
+      ];
+    }
   }
 }

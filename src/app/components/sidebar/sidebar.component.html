@@ -1,17 +1,17 @@
 <nav class="sidebar">
   <mat-nav-list>
     <mat-list-item
-      (click)="navigateTo('/student-dashboard/exam-list')"
-      [class.active]="isActive('/student-dashboard/exam-list')"
+      *ngFor="let item of getRoutes()"
+      (click)="navigateTo(item.route)"
+      [class.active]="isActive(item.route)"
     >
-      <span mat-line>Exam List</span>
-    </mat-list-item>
-    <mat-list-item
-      (click)="navigateTo('/student-dashboard/given-exam')"
-      [class.active]="isActive('/student-dashboard/given-exam')"
-    >
-      <span mat-line>Given exam</span>
-      <span matBadge="4" matBadgeColor="accent" class="badge"></span>
+      <span mat-line>{{ item.name }}</span>
+      <span
+        *ngIf="item.badge"
+        matBadge="{{ item.badge }}"
+        matBadgeColor="accent"
+        class="badge"
+      ></span>
     </mat-list-item>
   </mat-nav-list>
 </nav>

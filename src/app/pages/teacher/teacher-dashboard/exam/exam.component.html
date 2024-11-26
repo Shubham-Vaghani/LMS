@@ -1,0 +1,39 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer mode="side" position="end" class="full-height-drawer">
+    <div class="drawer-content">
+      <app-create-exam [drawer]="drawer" />
+      <button mat-button (click)="drawer.close()">Close</button>
+    </div>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <button mat-raised-button color="primary" (click)="drawer.toggle()">
+      Create Exam
+    </button>
+
+    <div class="exam-container">
+      <h1 class="title">Exam Details</h1>
+      <div class="exam-cards">
+        <div class="exam-card" *ngFor="let exam of exams$ | async">
+          <div class="exam-detail">
+            <span class="label">Topic</span>
+            <span class="value">{{ exam.topic }}</span>
+          </div>
+          <div class="exam-detail">
+            <span class="label">Date</span>
+            <span class="value">{{ exam.examDate }}</span>
+          </div>
+          <div class="exam-detail">
+            <span class="label">Subject</span>
+            <span class="value">{{ exam.subject }}</span>
+          </div>
+          <div class="exam-detail">
+            <!-- <span class="label">Total Queations</span> -->
+            <span class="label">Id</span>
+            <span class="value">{{ exam._id }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-drawer-container>

@@ -3,14 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { LoginsignupComponent } from './components/loginsignup/loginsignup.component';
-import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './pages/main/main.component';
 import { StudentLoginComponent } from './pages/student/student-login/student-login.component';
 import { TeacherLoginComponent } from './pages/teacher/teacher-login/teacher-login.component';
 import { ComponentsModule } from './components/components.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from './store/reducers';
+import { createExamEffects } from './store/effects/exam.effects';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,11 @@ import { ComponentsModule } from './components/components.module';
     NoopAnimationsModule,
     ComponentsModule,
     MatButtonModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([createExamEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

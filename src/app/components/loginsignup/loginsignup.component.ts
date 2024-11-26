@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,12 +7,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./loginsignup.component.scss'],
 })
 export class LoginsignupComponent {
+  @Input() role: string = '';
   isSignup = false;
 
   constructor(private router: Router) {}
 
   onSubmit(form: any) {
-    this.router.navigate(['/student-dashboard']);
+    switch (this.role) {
+      case 'student':
+        this.router.navigate(['/student-dashboard']);
+        break;
+      case 'teacher':
+        this.router.navigate(['/teacher-dashboard']);
+        break;
+    }
 
     if (form.valid) {
       // Perform login or signup action

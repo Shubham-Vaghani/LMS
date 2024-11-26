@@ -1,0 +1,182 @@
+<mat-stepper linear #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Create Exam</ng-template>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Exam Date and Time</mat-label>
+        <input
+          matInput
+          [ngxMatDatetimePicker]="datetimePicker"
+          formControlName="examDateTime"
+          required
+        />
+        <ngx-mat-datepicker-toggle
+          matSuffix
+          [for]="datetimePicker"
+        ></ngx-mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #datetimePicker></ngx-mat-datetime-picker>
+        <mat-error
+          *ngIf="
+            firstFormGroup.get('examDateTime')?.invalid &&
+            firstFormGroup.get('examDateTime')?.touched
+          "
+        >
+          Please enter a date and time
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Subject</mat-label>
+        <mat-select formControlName="subject" required>
+          <mat-option *ngFor="let subject of subjects" [value]="subject">{{
+            subject
+          }}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            firstFormGroup.get('subject')?.invalid &&
+            firstFormGroup.get('subject')?.touched
+          "
+        >
+          Please select a Subject
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Topic Name</mat-label>
+        <input
+          matInput
+          formControlName="topicName"
+          placeholder="Enter topic name"
+          required
+        />
+        <mat-error
+          *ngIf="
+            firstFormGroup.get('topicName')?.invalid &&
+            firstFormGroup.get('topicName')?.touched
+          "
+        >
+          Please enter a topic name
+        </mat-error>
+      </mat-form-field>
+
+      <div>
+        <button mat-button>Save as draft</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Add Question</ng-template>
+      <div formArrayName="questions">
+        <div
+          *ngFor="let question of questions.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <mat-form-field appearance="fill">
+            <mat-label>Question</mat-label>
+            <input matInput formControlName="question" placeholder="Question" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Option 1</mat-label>
+            <input matInput formControlName="option1" placeholder="Option 1" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Option 2</mat-label>
+            <input matInput formControlName="option2" placeholder="Option 2" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Option 3</mat-label>
+            <input matInput formControlName="option3" placeholder="Option 3" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Option 4</mat-label>
+            <input matInput formControlName="option4" placeholder="Option 4" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Correct Answer</mat-label>
+            <mat-select
+              formControlName="correctAnswer"
+              placeholder="Correct Answer"
+            >
+              <mat-option [value]="0">Option 1</mat-option>
+              <mat-option [value]="1">Option 2</mat-option>
+              <mat-option [value]="2">Option 3</mat-option>
+              <mat-option [value]="3">Option 4</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button
+            *ngIf="questions.length > 1"
+            mat-button
+            type="button"
+            (click)="removeQuestion(i)"
+          >
+            Remove Question
+          </button>
+        </div>
+      </div>
+      <button mat-button type="button" (click)="addQuestion()">
+        Add More Question
+      </button>
+
+      <div>
+        <button mat-button>Save as draft</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Preview</ng-template>
+
+    <div>
+      <h3>Exam Details</h3>
+      <p>
+        <strong>Exam Date and Time:</strong>
+        {{ firstFormGroup.get("examDateTime")?.value }}
+      </p>
+      <p>
+        <strong>Subject:</strong> {{ firstFormGroup.get("subject")?.value }}
+      </p>
+      <p>
+        <strong>Topic Name:</strong>
+        {{ firstFormGroup.get("topicName")?.value }}
+      </p>
+
+      <h3>Questions</h3>
+      <div *ngFor="let question of questions.controls; let i = index">
+        <p>
+          <strong>Question:</strong>
+          {{ question.get("question")?.value }}
+        </p>
+        <p>
+          <strong>Option 1:</strong>
+          {{ question.get("option1")?.value }}
+        </p>
+        <p>
+          <strong>Option 2:</strong>
+          {{ question.get("option2")?.value }}
+        </p>
+        <p>
+          <strong>Option 3:</strong>
+          {{ question.get("option3")?.value }}
+        </p>
+        <p>
+          <strong>Option 4:</strong>
+          {{ question.get("option4")?.value }}
+        </p>
+        <p>
+          <strong>Correct Answer:</strong>
+          {{ question.get("correctAnswer")?.value + 1 }}
+        </p>
+      </div>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="handleFormData()">Submit</button>
+        <mat-spinner *ngIf="loading$ | async"></mat-spinner>
+      </div>
+    </div>
+  </mat-step>
+</mat-stepper>
