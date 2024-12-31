@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { deleteExam, loadExams } from 'src/app/store/exam/exam.actions';
+import { examStateSelector } from 'src/app/store/exam/exam.selectors';
 
 @Component({
   selector: 'app-exam',
@@ -7,11 +9,31 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./exam.component.scss'],
 })
 export class ExamComponent implements OnInit {
-  exams$: any;
+  @ViewChild('drawer') drawer: any;
+  exams: any;
+  isLoading!: boolean;
+  editExamData!: {};
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    this.store.select(examStateSelector).subscribe((res: any) => {
+      this.isLoading = res?.loading;
+      this.exams = res?.data;
+    });
+  }
 
   ngOnInit(): void {
-    this.exams$ = this.store.select((state: any) => state.exam.data);
+    this.store.dispatch(loadExams());
+  }
+
+  examEdit(examId: any) {
+    const exam = this.exams.find((e: any) => e._id === examId);
+    this.drawer.open();
+    this.editExamData = exam;
+    console.log(exam);
+  }
+
+  examDelete(examId: any) {
+    console.log(examId);
+    this.store.dispatch(deleteExam({ id: examId }));
   }
 }

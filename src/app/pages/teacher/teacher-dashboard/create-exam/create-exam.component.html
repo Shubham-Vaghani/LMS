@@ -175,7 +175,7 @@
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="handleFormData()">Submit</button>
-        <mat-spinner *ngIf="loading$ | async"></mat-spinner>
+        <mat-spinner *ngIf="isloading"></mat-spinner>
       </div>
     </div>
   </mat-step>

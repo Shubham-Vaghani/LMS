@@ -1,27 +1,30 @@
 <div class="exam-container">
   <h1 class="title">Exam Details</h1>
-  <div class="exam-cards">
+  <div *ngIf="!isLoading" class="exam-cards">
     <div
       class="exam-card"
       *ngFor="let exam of exams"
-      (click)="goToExam(exam.id)"
+      (click)="goToExam(exam._id)"
     >
       <div class="exam-detail">
         <span class="label">Topic</span>
-        <span class="value">{{ exam.title }}</span>
+        <span class="value">{{ exam.topicName }}</span>
+      </div>
+      <div class="exam-detail">
+        <span class="label">Subject</span>
+        <span class="value">{{ exam.subject }}</span>
       </div>
       <div class="exam-detail">
         <span class="label">Date</span>
-        <span class="value">{{ exam.date }}</span>
-      </div>
-      <div class="exam-detail">
-        <span class="label">Score</span>
-        <span class="value">{{ exam.score }}</span>
+        <span class="value">{{ exam.examDateTime }}</span>
       </div>
       <div class="exam-detail">
         <span class="label">Taken By</span>
-        <span class="value">{{ exam.takenBy }}</span>
+        <span class="value">{{ exam._id }}</span>
       </div>
     </div>
+  </div>
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
   </div>
 </div>

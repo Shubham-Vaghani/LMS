@@ -1,6 +1,6 @@
 <div class="exam-container">
   <app-question
-    [questions]="questions"
+    [(questions)]="questions"
     [(currentQuestionIndex)]="currentQuestionIndex"
   ></app-question>
 
@@ -19,5 +19,6 @@
     >
       Next
     </button>
+    <button mat-button color="primary" (click)="saveExam()">Save</button>
   </div>
 </div>

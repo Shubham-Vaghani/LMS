@@ -11,8 +11,9 @@ import { ComponentsModule } from './components/components.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers } from './store/reducers';
-import { createExamEffects } from './store/effects/exam.effects';
+import { metaReducers, reducers } from './store/index';
+import { examEffects } from './store/exam/exam.effects';
+import { examResultEffects } from './store/examresult/examresult.effects';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,8 @@ import { createExamEffects } from './store/effects/exam.effects';
     NoopAnimationsModule,
     ComponentsModule,
     MatButtonModule,
-    StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([createExamEffects]),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([examEffects, examResultEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),

@@ -9,6 +9,7 @@ import { GivenExamComponent } from './given-exam/given-exam.component';
 import { ExamComponent } from './exam/exam.component';
 import { ExamReviewComponent } from './exam-review/exam-review.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
     ComponentsModule,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class StudentDashboardModule {}

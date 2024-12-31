@@ -1,21 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { loadExams } from 'src/app/store/exam/exam.actions';
+import { examStateSelector } from 'src/app/store/exam/exam.selectors';
 
 @Component({
   selector: 'app-exam-list',
   templateUrl: './exam-list.component.html',
   styleUrls: ['./exam-list.component.scss'],
 })
-export class ExamListComponent {
-  exams = Array.from({ length: 30 }, (_, i) => ({
-    id: i + 1,
-    title: `Exam ${i + 1}`,
-    date: `2023-10-${(i % 30) + 1}`,
-    score: Math.floor(Math.random() * 100),
-    takenBy: `Teacher ${i + 1}`,
-  }));
+export class ExamListComponent implements OnInit {
+  exams: any;
+  isLoading!: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: Store) {
+    this.store.select(examStateSelector).subscribe((res: any) => {
+      this.isLoading = res.loading;
+      this.exams = res.data;
+    });
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(loadExams());
+  }
 
   goToExam(examId: number) {
     this.router.navigate(['/student-dashboard/exam-list', examId]);

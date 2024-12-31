@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { examStateSelector } from 'src/app/store/exam/exam.selectors';
+import { saveExamResult } from 'src/app/store/examresult/examresult.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-exam',
@@ -7,48 +11,22 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./exam.component.scss'],
 })
 export class ExamComponent implements OnInit {
-  questions = [
-    {
-      id: 1,
-      question: 'What is the capital of France?',
-      options: ['Paris', 'London', 'Berlin', 'Madrid'],
-      correctOption: 'Paris',
-      // selectedOption: 'London',
-    },
-    {
-      id: 2,
-      question: 'What is 2 + 2?',
-      options: ['3', '4', '5', '6'],
-      correctOption: '4',
-      // selectedOption: '6',
-    },
-    {
-      id: 3,
-      question: 'What is the capital of Spain?',
-      options: ['Madrid', 'Lisbon', 'Rome', 'Athens'],
-      correctOption: 'Madrid',
-      // selectedOption: 'Athens',
-    },
-  ];
+  questions: any[] = [];
 
   currentQuestionIndex = 0;
   isReviewMode: boolean = false;
+  examId: string = '';
 
-  constructor(private route: ActivatedRoute) {
-    for (let i = 4; i <= 50; i++) {
-      this.questions.push({
-        id: i,
-        question: `Dummy question ${i}`,
-        options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-        correctOption: 'Option 1',
-      });
-    }
-  }
+  constructor(private route: ActivatedRoute, private store: Store) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const examId = +params['id'];
-      // Fetch exam data based on examId if needed
+      this.examId = params['id'];
+    });
+
+    this.store.select(examStateSelector).subscribe((res: any) => {
+      const exam = res.data.filter((data: any) => data._id === this.examId);
+      this.questions = exam[0].questions;
     });
   }
 
@@ -56,11 +34,32 @@ export class ExamComponent implements OnInit {
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
     }
+    console.log(this.questions, 'question');
   }
 
   previousQuestion() {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
     }
+  }
+
+  saveExam() {
+    // const unansweredQuestions = this.questions.filter(
+    //   (question) => !question.selectedOption
+    // );
+
+    // if (unansweredQuestions.length > 0) {
+    //   this.snackBar.open('Some questions are unanswered!', 'Close', {
+    //     duration: 3000,
+    //   });
+    //   return;
+    // }
+
+    const examResultData = { examId: this.examId, examResult: this.questions };
+
+    this.store.dispatch(saveExamResult({ saveExam: examResultData }));
+    // this.snackBar.open('Exam saved successfully!', 'Close', {
+    //   duration: 3000,
+    // });
   }
 }

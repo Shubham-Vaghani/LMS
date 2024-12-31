@@ -1,7 +1,7 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer mode="side" position="end" class="full-height-drawer">
     <div class="drawer-content">
-      <app-create-exam [drawer]="drawer" />
+      <app-create-exam [drawer]="drawer" [editExamData]="editExamData" />
       <button mat-button (click)="drawer.close()">Close</button>
     </div>
   </mat-drawer>
@@ -13,15 +13,15 @@
 
     <div class="exam-container">
       <h1 class="title">Exam Details</h1>
-      <div class="exam-cards">
-        <div class="exam-card" *ngFor="let exam of exams$ | async">
+      <div class="exam-cards" *ngIf="!isLoading">
+        <div class="exam-card" *ngFor="let exam of exams">
           <div class="exam-detail">
             <span class="label">Topic</span>
-            <span class="value">{{ exam.topic }}</span>
+            <span class="value">{{ exam.topicName }}</span>
           </div>
           <div class="exam-detail">
             <span class="label">Date</span>
-            <span class="value">{{ exam.examDate }}</span>
+            <span class="value">{{ exam.examDateTime }}</span>
           </div>
           <div class="exam-detail">
             <span class="label">Subject</span>
@@ -32,7 +32,22 @@
             <span class="label">Id</span>
             <span class="value">{{ exam._id }}</span>
           </div>
+          <div class="card-actions">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="examEdit(exam._id)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="examDelete(exam._id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
+      </div>
+      <div *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
       </div>
     </div>
   </div>

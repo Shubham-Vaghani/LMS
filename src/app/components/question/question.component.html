@@ -15,6 +15,7 @@
     <mat-radio-group
       [(ngModel)]="questions[currentQuestionIndex].selectedOption"
       [disabled]="isReviewMode"
+      (ngModelChange)="onOptionChange($event)"
     >
       <mat-radio-button
         *ngFor="let option of questions[currentQuestionIndex].options"
